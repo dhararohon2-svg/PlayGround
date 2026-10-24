@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="playtrace_background">#070b09</color>
+    <color name="playtrace_accent">#c9ff4d</color>
+    <color name="playtrace_ink">#0b1206</color>
+</resources>

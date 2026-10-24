@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+}
+
+def webRoot = rootProject.projectDir.parentFile
+def webAssetsDir = layout.buildDirectory.dir('generated/webAssets')
+
+tasks.register('syncWebAssets', Copy) {
+    from(webRoot) {
+        include 'index.html'
+        include 'styles.css'
+        include 'manifest.webmanifest'
+        include 'src/**'
+        include 'icons/**'
+        include 'assets/**'
+    }
+    into(webAssetsDir)
+}
+
+android {
+    namespace 'com.playtrace.app'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.playtrace.app'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs += webAssetsDir
+        }
+    }
+}
+
+tasks.named('preBuild').configure {
+    dependsOn 'syncWebAssets'
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.17.0'
+    implementation 'androidx.webkit:webkit:1.18.0'
+}
